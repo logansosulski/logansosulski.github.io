@@ -41,5 +41,5 @@ function mouseWheel(event) {
 function mousePressed() {
   let cur = [mouseX, mouseY, size];
   imgArray.push(cur);
-  image(img,mouseX,mouseY,size,size);
+  // image(img,mouseX,mouseY,size,size);
 }
