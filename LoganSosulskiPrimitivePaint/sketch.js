@@ -1,9 +1,9 @@
-// Project Title
-// Your Name
-// Date
+// Primitive Paint
+// Logan Sosulski
+// Feb. 14, 2019
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Added a feature to allow user to preview shapes before they are placed
 
 let shapeSize = 100;
 let dataArrayRect = [];
@@ -13,6 +13,8 @@ let shapeType = "rect";
 let r = 255;
 let g = 0;
 let b = 255;
+let autonomousShapeSize = 50;
+let autonomousShapeGrow = true;
 
 
 function setup() {
@@ -21,6 +23,18 @@ function setup() {
 
 function draw() {
   background(0);
+  for (let i=0; i<dataArrayRect.length; i++) {
+    fill(dataArrayRect[i][3],dataArrayRect[i][4],dataArrayRect[i][5]);
+    rect(dataArrayRect[i][0], dataArrayRect[i][1], dataArrayRect[i][2], dataArrayRect[i][2]);
+  }
+  for (let i=0; i<dataArrayEllipse.length; i++) {
+    fill(dataArrayEllipse[i][3],dataArrayEllipse[i][4],dataArrayEllipse[i][5]);
+    ellipse(dataArrayEllipse[i][0], dataArrayEllipse[i][1], dataArrayEllipse[i][2], dataArrayEllipse[i][2]);
+  }
+  for (let i=0; i<dataArrayTri.length; i++) {
+    fill(dataArrayTri[i][6],dataArrayTri[i][7],dataArrayTri[i][8]);
+    triangle(dataArrayTri[i][0], dataArrayTri[i][1], dataArrayTri[i][2], dataArrayTri[i][3], dataArrayTri[i][4],dataArrayTri[i][5]);
+  }
   fill(r,g,b);
   if (shapeType === "rect") {
     rect(mouseX-shapeSize/2,mouseY-shapeSize/2,shapeSize,shapeSize);
@@ -31,10 +45,28 @@ function draw() {
   if (shapeType === "triangle") {
     triangle(mouseX-shapeSize/2,mouseY+shapeSize/2,mouseX+shapeSize/2,mouseY+shapeSize/2,mouseX,mouseY-shapeSize/2);
   }
-  for (let i=0; i<dataArrayRect.length; i++) {
-    fill(dataArrayRect[i][3],dataArrayRect[i][4],dataArrayRect[i][5]);
-    rect(dataArrayRect[i][0], dataArrayRect[i][1], dataArrayRect[i][2], dataArrayRect[i][2]);
+  fill(0,0,255);
+  ellipse(windowWidth/2,windowHeight/2, autonomousShapeSize, autonomousShapeSize);
+  if (autonomousShapeGrow === true) {
+    if (autonomousShapeSize < 100) {
+      autonomousShapeSize += 1;
+    }
+    else {
+      autonomousShapeGrow = false;
+    }
   }
+  else {
+    if (autonomousShapeSize > 1) {
+      autonomousShapeSize -= 1;
+    }
+    else {
+      autonomousShapeGrow = true;
+    }
+  }
+  fill(255);
+  textSize(24);
+  textFont("Comic Sans");
+  text("Logan Sosulskki", windowWidth-200, windowHeight-50);
 }
 
 function keyTyped() {
@@ -52,25 +84,25 @@ function keyTyped() {
   }
   if (keyCode === 32) {
     background(0);
+    dataArrayRect = [];
+    dataArrayEllipse = [];
+    dataArrayTri = [];
   }
 }
 
 function mouseWheel(event) {
   if (event.delta > 0) {
-    size -= 50;
+    shapeSize -= 10;
   }
   else {
-    size += 50;
+    shapeSize += 10;
   }
-  if (size <= 50) {
-    size += 50;
+  if (shapeSize <= 10) {
+    shapeSize += 10;
   }
 }
   
 function mousePressed() {
-  r = random(255);
-  g = random(255);
-  b = random(255);
   if (shapeType === "rect") {
     let cur = [mouseX-shapeSize/2,mouseY-shapeSize/2,shapeSize,r,g,b];
     dataArrayRect.push(cur);
@@ -79,8 +111,11 @@ function mousePressed() {
     let cur = [mouseX,mouseY,shapeSize,r,g,b];
     dataArrayEllipse.push(cur);
   }
-}
-
-for (let i=0; i<dataArray.length; i++) {
-  image(img, dataArray[i][0], dataArray[i][1], dataArray[i][2], dataArray[i][2]);
+  if (shapeType === "triangle") {
+    let cur = [mouseX-shapeSize/2,mouseY+shapeSize/2,mouseX+shapeSize/2,mouseY+shapeSize/2,mouseX,mouseY-shapeSize/2,r,g,b];
+    dataArrayTri.push(cur);
+  }
+  r = random(255);
+  g = random(255);
+  b = random(255);
 }
