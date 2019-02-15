@@ -5,6 +5,7 @@
 // Extra for Experts:
 // Added a feature to allow user to preview shapes before they are placed
 
+//Initializing the variables
 let shapeSize = 100;
 let dataArrayRect = [];
 let dataArrayEllipse = [];
@@ -16,13 +17,14 @@ let b = 255;
 let autonomousShapeSize = 50;
 let autonomousShapeGrow = true;
 
-
+//Creating the canvas
 function setup() {
   createCanvas(2000, 1000);
 }
 
 function draw() {
   background(0);
+  //Drawing any shape
   for (let i=0; i<dataArrayRect.length; i++) {
     fill(dataArrayRect[i][3],dataArrayRect[i][4],dataArrayRect[i][5]);
     rect(dataArrayRect[i][0], dataArrayRect[i][1], dataArrayRect[i][2], dataArrayRect[i][2]);
@@ -47,6 +49,7 @@ function draw() {
   }
   fill(0,0,255);
   ellipse(windowWidth/2,windowHeight/2, autonomousShapeSize, autonomousShapeSize);
+  //Drawing the blue growing/shrinking ellipse
   if (autonomousShapeGrow === true) {
     if (autonomousShapeSize < 100) {
       autonomousShapeSize += 1;
@@ -63,13 +66,15 @@ function draw() {
       autonomousShapeGrow = true;
     }
   }
+  //Drawing my name at the bottom
   fill(255);
   textSize(24);
-  textFont("Comic Sans");
-  text("Logan Sosulskki", windowWidth-200, windowHeight-50);
+  textFont("Comic Sans MS");
+  text("Logan Sosulski", windowWidth-200, windowHeight-50);
 }
 
 function keyTyped() {
+  //changing between shapes depending on key pressed
   if (key === "a") {
     shapeType = "rect";
     rect(mouseX-shapeSize/2,mouseY-shapeSize/2,shapeSize,shapeSize);
