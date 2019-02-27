@@ -5,7 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let mouseQuad;
+let mouseQuad = 2;
 let r1 = 255;
 let g1 = 255;
 let b1 = 0;
@@ -25,109 +25,134 @@ function setup() {
 
 function draw() {
   background(255);
-
-
-
-  if (mouseX > windowWidth/2 && mouseY < windowHeight/2) {
-    mouseQuad = 1;
-    if (b1 < 255) {
-      b1=b1+15;
-      g1=g1-15;
-      fill(r1,g1,b1);
-    }
-    fill(r1,g1,b1);
+  quadrentLocation();
+  print(mouseQuad);
+  if (mouseQuad === 1) {
+    fadeIn(r1, g1, b1);
   }
   else {
-    if (b1 > 0) {
-      b1=b1-15;
-      g1=g1+15;
-      fill(r1,g1,b1);
-    }
-    fill(r1,g1,b1);
+    fadeOut(r1, g1, b1);
   }
-  rect(windowWidth/2,0,windowWidth/2,windowHeight/2);
+  fill(r1, g1, b1);
+  rect(width / 2, 0, width / 2, height / 2);
 
-
-
-  if (mouseX < windowWidth/2 && mouseY < windowHeight/2) {
-    mouseQuad = 2;
-    if (b2 < 255) {
-      b2=b2+15;
-      g2=g2-15;
-      fill(r2,g2,b2);
-    }
-    fill(r2,g2,b2);
+  if (mouseQuad === 2) {
+    fadeIn(r2, g2, b2);
   }
   else {
-    if (b2 > 0) {
-      b2=b2-15;
-      g2=g2+15;
-      fill(r2,g2,b2);
-    }
-    fill(r2,g2,b2);
+    fadeOut(r2, g2, b2);
   }
-  rect(0,0,windowWidth/2,windowHeight/2);
+  fill(r2, g2, b2);
+  rect(0, 0, width / 2, height / 2);
 
-
-
-  if (mouseX < windowWidth/2 && mouseY > windowHeight/2) {
-    mouseQuad = 3;
-    if (b3 < 255) {
-      b3=b3+15;
-      g3=g3-15;
-      fill(r3,g3,b3);
-    }
-    fill(r3,g3,b3);
+  if (mouseQuad === 3) {
+    fadeIn(r3, g3, b3);
   }
   else {
-    if (b3 > 0) {
-      b3=b3-15;
-      g3=g3+15;
-      fill(r3,g3,b3);
-    }
-    fill(r3,g3,b3);
+    fadeOut(r3, g3, b3);
   }
-  rect(0,windowHeight/2,windowWidth/2,windowHeight/2);
+  fill(r3, g3, b3);
+  rect(0, height / 2, width / 2, height / 2);
 
-
-
-  if (mouseX > windowWidth/2 && mouseY > windowHeight/2) {
-    mouseQuad = 4;
-    fadeIn(r4,g4,b4);
-    fill(r4,g4,b4);
+  if (mouseQuad === 4) {
+    fadeIn(r4, g4, b4);
   }
   else {
-    fadeOut(r4,g4,b4);
-    fill(r4,g4,b4);
+    fadeOut(r4, g4, b4);
   }
-  rect(windowWidth/2,windowHeight/2,windowWidth/2,windowHeight/2);
+  fill(r4, g4, b4);
+  rect(width / 2, height / 2, width / 2, height / 2);
+
+  onButton();
 }
 
-function fadeIn(r,g,b) {
+function fadeIn(r, g, b) {
   if (b < 255) {
-    b=b+15;
-    g=g-15;
-    fill(r,g,b);
+    b = b + 15;
+    g = g - 15;
+    fill(r, g, b);
+  }
+  else {
+    b = b - 15;
+    g = g - 15;
   }
 }
 
-function fadeOut(r,g,b) {
+function fadeOut(r, g, b) {
   if (b > 0) {
-    b4=b4-15;
-    g4=g4+15;
-    fill(r4,g4,b4);
+    b = b - 15;
+    g = g + 15;
+    fill(r, g, b);
+  }
+  else {
+    b = b + 15;
+    g = g - 15;
+  }
+}
+
+function onButton() {
+  if (mouseIsPressed) {
+    if (mouseX < width / 2 && mouseY < height / 2) {
+      b1 = 255;
+      g1 = 0;
+      b2 = 255;
+      g2 = 0;
+      b3 = 255;
+      g3 = 0;
+      b4 = 255;
+      g4 = 0;
+    }
+    else {
+      b1 = 0;
+      g1 = 255;
+      b2 = 0;
+      g2 = 255;
+      b3 = 0;
+      g3 = 255;
+      b4 = 0;
+      g4 = 255;
+    }
+  }
+  else {
+    b1 = 0;
+    g1 = 255;
+    b2 = 0;
+    g2 = 255;
+    b3 = 0;
+    g3 = 255;
+    b4 = 0;
+    g4 = 255;
   }
 }
 
 function mousePressed() {
-  if (mouseX < windowWidth/2 && mouseY < windowHeight/2) {
-    b1 = 255;
-    g1 = 0;
-    b2 = 255;
-    g2 = 0;
-    b3 = 255;
-    g3 = 0;
-    b4 = 255;
-    g4 = 0;
-  } 
+  if (mouseX > width / 2 && mouseY > height / 2) {
+    if (b4 === 0) {
+      b4 = 255;
+      g4 = 0;
+    }
+    else {
+      b4 = 0;
+      g4 = 255;
+    }
+  }
+}
+
+function quadrentLocation() {
+  if (mouseX > width / 2) {
+    if (mouseY < height / 2) {
+      mouseQuad = 1;
+    }
+    else {
+      mouseQuad = 4;
+    }
+  }
+  else {
+    if (mouseY < height / 2) {
+      mouseQuad = 2;
+    }
+    else {
+      mouseQuad = 3;
+    }
+  }
 }
