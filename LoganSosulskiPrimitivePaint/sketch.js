@@ -24,7 +24,7 @@ function setup() {
 
 function draw() {
   background(0);
-  //Drawing any shape
+  //Drawing shapes stored in arrays
   for (let i=0; i<dataArrayRect.length; i++) {
     fill(dataArrayRect[i][3],dataArrayRect[i][4],dataArrayRect[i][5]);
     rect(dataArrayRect[i][0], dataArrayRect[i][1], dataArrayRect[i][2], dataArrayRect[i][2]);
@@ -87,6 +87,7 @@ function keyTyped() {
     shapeType = "triangle";
     triangle(mouseX-shapeSize/2,mouseY+shapeSize/2,mouseX+shapeSize/2,mouseY+shapeSize/2,mouseX,mouseY-shapeSize/2);
   }
+  //clearing the cavnas
   if (keyCode === 32) {
     background(0);
     dataArrayRect = [];
@@ -96,6 +97,7 @@ function keyTyped() {
 }
 
 function mouseWheel(event) {
+  //changing the size of the shapes
   if (event.delta > 0) {
     shapeSize -= 10;
   }
@@ -108,6 +110,7 @@ function mouseWheel(event) {
 }
   
 function mousePressed() {
+  //Putting info about mouse location and shape size into an array
   if (shapeType === "rect") {
     let cur = [mouseX-shapeSize/2,mouseY-shapeSize/2,shapeSize,r,g,b];
     dataArrayRect.push(cur);
@@ -120,6 +123,7 @@ function mousePressed() {
     let cur = [mouseX-shapeSize/2,mouseY+shapeSize/2,mouseX+shapeSize/2,mouseY+shapeSize/2,mouseX,mouseY-shapeSize/2,r,g,b];
     dataArrayTri.push(cur);
   }
+  //changing the colour of the new shape
   r = random(255);
   g = random(255);
   b = random(255);
