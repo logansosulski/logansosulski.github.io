@@ -20,6 +20,7 @@ let r4 = 255;
 let g4 = 255;
 let b4 = 0;
 let light = "off";
+let topLeftClicked = false;
 
 //Setting Up the Canvas
 function setup() {
@@ -132,12 +133,16 @@ function mousePressed() {
       light = "off";
     }
   }
+  //When the Top Left Corner is Clicked Set the State Vaiable to true
+  if (mouseQuad === 2) {
+    topLeftClicked = true;
+  }
 }
 
-//When the Top Left Corner is Clicked Make all the Rectangles Light Up
+//Make all the Rectangles Light Up When the Mouse is Clicked in the Top Left Corner
 //Until the Mouse Leaves the Area of the Rectangle
 function turnAllOn() {
-  if (mouseIsPressed === true) {
+  if (topLeftClicked === true) {
     if (mouseQuad === 2) {
       b1 = 255;
       g1 = 0;
@@ -149,6 +154,7 @@ function turnAllOn() {
       g4 = 0;
     }
     else {
+      topLeftClicked = false;
       b1 = 0;
       g1 = 255;
       b2 = 0;
