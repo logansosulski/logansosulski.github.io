@@ -27,9 +27,10 @@ function setup() {
 }
 
 function draw() {
-  background(255);
+  background(0,255,255);
   move();
   nextFrame();
+  stayInBounds();
   image(sansCostumes[counter],x,y);
 }
 
@@ -58,10 +59,6 @@ function keyReleased() {
 }
 
 function move() {
-  global x;
-  global y;
-  let x = width/2;
-  let y = height/2;
   if (direction === "north") {
     if (counter === 7) {
       counter = 4;
@@ -93,6 +90,21 @@ function move() {
     if (keyDown === true) {
       x-=10;
     }
+  }
+}
+
+function stayInBounds() {
+  if (x+100 > width) {
+    x = width-100;
+  }
+  if (x-100 < 0) {
+    x = 0+100;
+  }
+  if (y+150 > height) {
+    y = height-150;
+  }
+  if (y-150 < 0) {
+    y = 0+150;
   }
 }
 
