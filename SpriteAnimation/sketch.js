@@ -1,24 +1,27 @@
-// Project Title
-// Your Name
-// Date
+// Sprite Animation
+// Logan Sosulski
+// 2019/03/27
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Did the challenges from canvas
 
+//initilizing my variables
 let sansCostumes = [];
 let direction = "south";
 let speed = 10;
 let counter = 0;
-let keyDown = false;
+let keyDown = false; //state variable to decide if a key is pressed or not
 let x;
 let y;
 
+//load all the costumes and put them in an array
 function preload() {
   for (let i=1;i<=16;i++) {
     sansCostumes.push(loadImage("assets/sans" + i + ".png"));
   }
 }
 
+//creating the canvas, giving my x and y values depending on the canvas size and setting the image mode to center
 function setup() {
   createCanvas(windowWidth, windowHeight);
   imageMode(CENTER);
@@ -26,6 +29,7 @@ function setup() {
   y = height/2;
 }
 
+//calling all my functions and drawing the sprite
 function draw() {
   background(0,255,255);
   move();
@@ -34,8 +38,9 @@ function draw() {
   image(sansCostumes[counter],x,y);
 }
 
+//figuring out which key was pressed and setting the costume/which direction to move in accordingly
 function keyTyped() {
-  keyDown = true;
+  keyDown = true; //change variable to say a key is being pressed
   if (key === "w") {
     direction = "north";
     counter = 4;
@@ -54,10 +59,12 @@ function keyTyped() {
   }
 }
 
+//change variable to say a key is not being pressed
 function keyReleased() {
   keyDown = false;
 }
 
+//switches the costumes and moves sprite depending on which direction the sprite is facing
 function move() {
   if (direction === "north") {
     if (counter === 7) {
@@ -93,6 +100,7 @@ function move() {
   }
 }
 
+//makes sprite stay in bounds
 function stayInBounds() {
   if (x+100 > width) {
     x = width-100;
@@ -108,6 +116,7 @@ function stayInBounds() {
   }
 }
 
+//deciding when to switch to next frame
 function nextFrame() {
   if (frameCount % speed === 0) {
     counter++;
