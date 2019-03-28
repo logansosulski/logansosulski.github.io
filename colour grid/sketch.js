@@ -6,7 +6,6 @@
 // - describe what you did to take this project "above and beyond"
 
 let squareSize;
-let divisableBy;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -23,30 +22,6 @@ function draw() {
   }
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth,windowHeight);
-  squareSize
-}
-
 function keyPressed() {
   draw();
 }
-
-function findCommonFactor() {
-  if (width%2 === 0 && height%2 === 0) {
-    divisableBy = 2;
-  }
-  if ()
-}
-
-//function mousePressed() {
-  //if (mouseButton === LEFT) {
-    //if (squareSize )
-      //squareSize = (width/20+height/10)/2;
-  //}
-  //if (mouseButton === RIGHT) {
-    //make bigger
-    //squareSize = (width/5+height/5)/2;
-  //}
-  //draw();
-//}
