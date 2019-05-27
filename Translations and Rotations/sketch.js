@@ -22,7 +22,7 @@ function drawClock(x,y) {
   push();
   translate(x,y);
   strokeWeight(5);
-  ellipse(0,0,clockDiameter,);
+  ellipse(0,0,clockDiameter,clockDiameter);
   for (let i = 0; i <= 360; i+= 6) {
     push();
     rotate(radians(i));
@@ -34,7 +34,6 @@ function drawClock(x,y) {
       strokeWeight(1);
       line(225,0,250,0);
     }
-    
     pop();
   }
   pop();
