@@ -1,5 +1,11 @@
-//Insert your Comment Header here.
+// Puzzle Game
+// Logan Sosulski
+// May 27, 2019
+//
+// Extra for Experts:
+// - Did the chanllenges from canvas
 
+//Initilizing Variables
 let pattern = 'cross';
 let NUM_ROWS = 4;
 let NUM_COLS = 5;
@@ -24,21 +30,31 @@ function draw() {
   background(220);
   determineActiveSquare();   //figure out which tile the mouse cursor is over
   drawGrid();                //render the current game board to the screen (and the overlay)
-  highlight();
-  winner();
+  highlight();               //put an overlay over squares that would be effected by left click
+  winner();                  //determining if the current gameboard is all one colour
 }
 
 
 
 function mousePressed(){
   if (mouseButton === LEFT) {
-    // cross-shaped pattern flips on a mouseclick. Boundary conditions are checked within the flip function to ensure in-bounds access for array
-    flip(currentCol, currentRow);
-    flip(currentCol-1, currentRow);
-    flip(currentCol+1, currentRow);
-    flip(currentCol, currentRow-1);
-    flip(currentCol, currentRow+1);
+    if (pattern === 'cross') {
+      // cross-shaped pattern flips on a left mouseclick. Boundary conditions are checked within the flip function to ensure in-bounds access for array
+      flip(currentCol, currentRow);
+      flip(currentCol-1, currentRow);
+      flip(currentCol+1, currentRow);
+      flip(currentCol, currentRow-1);
+      flip(currentCol, currentRow+1);
+    }
+    else {
+      // square pattern flips on a left mouseclick. Boundary conditions are checked within the flip function to ensure in-bounds access for array
+      flip(currentCol, currentRow);
+      flip(currentCol+1, currentRow);
+      flip(currentCol, currentRow+1);
+      flip(currentCol+1, currentRow+1);
+    }
   }
+  // single square flips on a right mouseclick
   if (mouseButton === RIGHT) {
     flip(currentCol, currentRow);
   }
@@ -71,17 +87,38 @@ function drawGrid(){
   }
 }
 
+// Puts a transparent highlight over squares that would be affected by current left click
 function highlight() {
   if (pattern === 'cross') {
-    fill(153,255,204);
+    fill(153,255,204,100);
     rect(currentCol*rectWidth, currentRow*rectHeight,rectWidth,rectHeight);
     rect((currentCol-1)*rectWidth, currentRow*rectHeight,rectWidth,rectHeight);
     rect((currentCol+1)*rectWidth, currentRow*rectHeight,rectWidth,rectHeight);
     rect(currentCol*rectWidth, (currentRow-1)*rectHeight,rectWidth,rectHeight);
     rect(currentCol*rectWidth, (currentRow+1)*rectHeight,rectWidth,rectHeight);
   }
+  else {
+    fill(153,255,204,100);
+    rect(currentCol*rectWidth, currentRow*rectHeight,rectWidth,rectHeight);
+    rect((currentCol+1)*rectWidth, currentRow*rectHeight,rectWidth,rectHeight);
+    rect(currentCol*rectWidth, (currentRow+1)*rectHeight,rectWidth,rectHeight);
+    rect((currentCol+1)*rectWidth, (currentRow+1)*rectHeight,rectWidth,rectHeight);
+  }
 }
 
+// When the space key is pressed the pattern of a left click switches
+function keyPressed() {
+  if (keyCode === 32) {
+    if (pattern === 'cross') {
+      pattern = 'square';
+    }
+    else {
+      pattern = 'cross';
+    }
+  }
+}
+
+// Assigns each square a 0 or 255 fill value with a 50% chance for each outcome
 function randomizeStart() {
   for (let i = 0; i < gridData.length; i++) {
     for ( let j = 0; j < gridData[i].length; j++) {
@@ -90,8 +127,9 @@ function randomizeStart() {
   }
 }
 
+// picks a random number from 1 to 100 and checks if its above or below 50 creating a 50/50 chance
 function coinFlip() {
-  let n = random(100);
+  let n = int(random(100));
   if ( n < 50) {
     return 0;
   }
@@ -100,6 +138,7 @@ function coinFlip() {
   }
 }
 
+// checks to see if all squares are the same colour and puts winning check up if all are same colour
 function winner() {
   let amountSame = 0;
   let testCase = gridData[0][0];
