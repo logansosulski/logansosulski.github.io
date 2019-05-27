@@ -11,6 +11,8 @@ let start = 0;
 let rectWidth = 1;
 let highestPoint;
 let flagX;
+let averageHeight;
+let rectNum;
 
 //creating the canvas based on window size
 function setup() {
@@ -21,6 +23,7 @@ function setup() {
 function draw() {
   generateTerrain();
   drawFlag();
+  average();
 }
 
 //generating terrain based on the last point generated
@@ -28,9 +31,11 @@ function generateTerrain() {
   background(255);
   fill(0);
   let xOff = start;
-  //resetting the flag variables
-  highestPoint=height;
-  flagX=0;
+  //resetting the flag variables and average height variable
+  highestPoint = height;
+  flagX = 0;
+  averageHeight = 0;
+  rectNum = 0;
   for (let x = 0; x < width; x++) {
     let y = noise(xOff) * height;
     if (y <= highestPoint) {
@@ -38,6 +43,10 @@ function generateTerrain() {
       highestPoint = y;
       flagX = x;
     }
+    //adding up every rect y and counting how many their are
+    averageHeight += y;
+    rectNum++;
+    fill(0);
     rect(x, y, rectWidth, height - y);
     xOff += inc;
   }
@@ -50,4 +59,12 @@ function drawFlag() {
   strokeWeight(5);
   line(flagX,highestPoint,flagX,highestPoint-50);
   triangle(flagX,highestPoint-50,flagX+25,highestPoint-40, flagX, highestPoint-30);
+}
+
+//finding the average height of the rectangles
+//and drawing a line and the average
+function average() {
+  averageHeight = averageHeight / rectNum;
+  strokeWeight(3);
+  line(0,averageHeight,width,averageHeight);
 }
