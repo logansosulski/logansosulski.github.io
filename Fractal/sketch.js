@@ -1,15 +1,19 @@
-// Project Title
-// Your Name
-// Date
+// Frctal
+// Logan Sosulski
+// May 27, 2019
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// - Didn't have to do it          B)
 
+//Delcaring my starting size and level
 const STARTINGSIZE = 60;
 const STARTINGLEVEL = 6;
 
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  noStroke();
+  noLoop();
 }
 
 function draw() {
