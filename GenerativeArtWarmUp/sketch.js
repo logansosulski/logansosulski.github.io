@@ -15,6 +15,7 @@ let y2;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255);
+  strokeWeight(2);
   x1 = width / 3+75;
   y1 = height - 100;
   x2 = width / 3+75;
@@ -24,7 +25,7 @@ function setup() {
 //Calls the function and tells program when to stop
 function draw() {
   drawLines();
-  if (frameCount === 60) {
+  if (frameCount === 45) {
     noLoop();
   }
 }

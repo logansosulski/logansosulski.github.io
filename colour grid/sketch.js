@@ -13,11 +13,11 @@ let commonFactors = [];
 
 //Setting the canvas size and determining the square size by calling functions
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(800, 600);
   findCommonFactors();
-  curIndex = round(commonFactors.length / 2);
+  curIndex = round(commonFactors.length / 2) - 1;
   changeSquareSize(0);
-  noLoop(); //Making the 
+  noLoop();
 }
 
 //Drawing a square grid with sudo-random colours to fill up the canvas
@@ -74,7 +74,7 @@ function findCommonFactors() {
     }
   }
 
-  //Finding all the common factors between the width and the height
+  //Finding all the common factors of the width and the height
   for (let i = 0; i < factorsX.length; i++) {
     for (let j = 0; j < factorsY.length; j++) {
       if (factorsX[i] === factorsY[j]) {

@@ -5,37 +5,22 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-let x1;
-let y1;
-let x2;
-let y2;
-
 function setup() {
-  createCanvas(3000, 4500);
+  createCanvas(windowWidth, windowHeight);
   background(255);
+  noLoop();
 }
 
 function draw() {
-  createPoints();
-  intersectsCircle();
-  drawLines();
+  drawArt();
 }
 
-function drawLines() {
-  stroke(random(150,200),random(100,200),random(200,255));
-  line(x1,y1,x2,y2);
-}
-
-function intersectsCircle() {
-  if ((y1+y2)/2 > 2000 && (y1+y2)/2 < 2500) {
-    createPoints();
-    intersectsCircle();
+function drawArt() {
+  beginShape();
+  for (let i = 0; i <= 360; i+=10) {
+    let x = width/2 * sin(i) + width/2;
+    let y = width/2 * cos(i) + height/2;
+    vertex(x, y);
   }
-}
-
-function createPoints() {
-  x1 = random(0,500);
-  y1 = random(height);
-  x1 = random(2500,width);
-  y2 = random(height);
+  endShape();
 }
