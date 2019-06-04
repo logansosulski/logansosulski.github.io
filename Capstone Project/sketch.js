@@ -25,7 +25,7 @@ function draw() {
 }
 
 function mouseClicked() {
-  pArray.push(new Unit(mouseX,mouseY, 1));
+  pArray.push(new Unit(random(20),random(10), 1));
 }
 
 function drawMap() {
@@ -110,12 +110,12 @@ class Unit {
   constructor(x_, y_, team_) {
     this.x = x_;
     this.y = y_;
-    this.size = 10;
+    this.team = team_;
+    this.size = 30;
     this.movement = 30;
     this.health = 150;
     this.pay = 3;
-    this.team = team_;
-    this.img = loadImage('assets/gear' + 'team_' + '.png');
+    this.img = loadImage("assets/gear" + "team_" + ".png");
   }
 
 
@@ -132,15 +132,46 @@ class Unit {
       fill(255,0,0);
     }
     ellipseMode(CENTER);
-    ellipse(this.x,this.y,this.size,this.size);
+    ellipse(this.x*TILESIZE+TILESIZE/2,this.y*TILESIZE+TILESIZE/2,this.size,this.size);
     //image(this.img,0,0,this.size,this.size);
+  }
+
+  location() {
+    let unitPos = [this.x,this.y];
+    return unitPos;
+  }
+
+  team() {
+    return this.team;
+  }
+
+  defend() {
+    this.health += 7;
   }
 
   endTurn() {
     this.movement = 30;
-    this.health += 5;
-    if (this.health > 150) {
-      this.health = 150;
+    this.health += 3;
+    if (this.health > 15) {
+      this.health = 15;
+    }
+  }
+}
+
+class City {
+  constructor(x_,y_,team_) {
+    this.x = x_;
+    this.y = y_;
+    this.team = team_;
+    this.size = 30;
+    this.pay = 100;
+  }
+
+  underAttack() {
+    for (let i = 0; i < pArray.length; i++) { 
+      if (pArray[i].location()[0] === this.x && pArray[i].location()[1] === this.y && pArray[i].team() === this.team) {
+        pArray[i].defend();
+      }
     }
   }
 }
