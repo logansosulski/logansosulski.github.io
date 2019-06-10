@@ -9,6 +9,9 @@ const MAPWIDTH = 3000;
 const MAPHEIGHT = 2000;
 const TILESIZE = 100;
 const DISTANCEMOVED = 10;
+let distX = 0;
+let distY = 0;
+let selectedSquare;
 let mapArray = [];
 let units= [];
 
@@ -29,9 +32,7 @@ function mouseClicked() {
   units.push(new Unit(1, 1, 1));
 
   //find which square the mouse is over
-  let mousCol = mouseX;
-  print(mousCol);
-  //print(mousRow);
+  findSquare();
 }
 
 function drawMap() {
@@ -47,6 +48,22 @@ function drawMap() {
   }
 }
 
+function findSquare() {
+  for (let i = 0; i < mapArray.length; i++) {
+    if (mouseX > mapArray[i][0] && mouseX < mapArray[i][0] + TILESIZE && mouseY > mapArray[i][1] && mouseY < mapArray[i][1] + TILESIZE) {
+      fill(0,255,0,50);
+      rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
+      let mapData = [mapArray[i][0] - distX, mapArray[i][1] - distY];
+      print(mapData);
+      selectedSquare = mapData;
+    }
+    else {
+      fill(255);
+      rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
+    }
+  } 
+}
+
 function moveMap() {
   fill(255);
 
@@ -54,6 +71,8 @@ function moveMap() {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] -= DISTANCEMOVED; 
       mapArray[i][1] -= DISTANCEMOVED;
+      distX += DISTANCEMOVED;
+      distY += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -66,6 +85,8 @@ function moveMap() {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] -= DISTANCEMOVED; 
       mapArray[i][1] += DISTANCEMOVED;
+      distX += DISTANCEMOVED;
+      distY -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -78,6 +99,8 @@ function moveMap() {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] += DISTANCEMOVED; 
       mapArray[i][1] -= DISTANCEMOVED;
+      distX -= DISTANCEMOVED;
+      distY += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -90,6 +113,8 @@ function moveMap() {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] += DISTANCEMOVED; 
       mapArray[i][1] += DISTANCEMOVED;
+      distX -= DISTANCEMOVED;
+      distY -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -101,6 +126,7 @@ function moveMap() {
   else if (mouseX > windowWidth - 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] -= DISTANCEMOVED; 
+      distX += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -111,6 +137,7 @@ function moveMap() {
   else if (mouseX < 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] += DISTANCEMOVED; 
+      distX -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -121,6 +148,7 @@ function moveMap() {
   else if (mouseY > windowHeight - 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][1] -= DISTANCEMOVED; 
+      distY += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -131,6 +159,7 @@ function moveMap() {
   else if (mouseY < 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][1] += DISTANCEMOVED; 
+      distY -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -141,6 +170,7 @@ function moveMap() {
   if (mapArray[0][0] > 0) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] -= DISTANCEMOVED; 
+      distX += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -151,6 +181,7 @@ function moveMap() {
   if (mapArray[0][1] > 0) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][1] -= DISTANCEMOVED; 
+      distY += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -161,6 +192,7 @@ function moveMap() {
   if (mapArray[mapArray.length-1][0] < windowWidth-TILESIZE) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] += DISTANCEMOVED; 
+      distX -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
@@ -171,6 +203,7 @@ function moveMap() {
   if (mapArray[mapArray.length-1][1] < windowHeight-TILESIZE) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][1] += DISTANCEMOVED; 
+      distY -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
     for (let i = 0; i < units.length; i++) {
