@@ -13,7 +13,8 @@ let distX = 0;
 let distY = 0;
 let selectedSquare;
 let mapArray = [];
-let units= [];
+let units = [];
+let cities = [];
 
 function setup() {
   createCanvas(MAPWIDTH, MAPHEIGHT);
@@ -23,21 +24,29 @@ function setup() {
 
 function draw() {
   moveMap();
+  displayObjects();
+}
+
+function displayObjects() {
+  for (let i = 0; i < cities.length; i++) {
+    cities[i].display();
+  }
   for (let i = 0; i < units.length; i++) {
     units[i].display();
   }
 }
 
 function mouseClicked() {
-  units.push(new Unit(1, 1, 1));
-
+  cities.push(new City(2, 3, "blue"));
+  units.push(new Unit(3, 3, "blue"));
   //find which square the mouse is over
   findSquare();
 }
 
 function drawMap() {
+  rectMode(CORNER);
   for (let x = 0; x < MAPWIDTH; x += TILESIZE) {
-    for (let y = 0; y < MAPWIDTH; y += TILESIZE) {
+    for (let y = 0; y < MAPHEIGHT; y += TILESIZE) {
       let mapData = [x,y];
       mapArray.push(mapData);
     }
@@ -49,6 +58,7 @@ function drawMap() {
 }
 
 function findSquare() {
+  rectMode(CORNER);
   for (let i = 0; i < mapArray.length; i++) {
     if (mouseX > mapArray[i][0] && mouseX < mapArray[i][0] + TILESIZE && mouseY > mapArray[i][1] && mouseY < mapArray[i][1] + TILESIZE) {
       fill(0,255,0,50);
@@ -64,151 +74,115 @@ function findSquare() {
   } 
 }
 
+function highlightSelected() {
+  
+}
+
 function moveMap() {
   fill(255);
-
+  rectMode(CORNER);
   if (mouseX > windowWidth - 50 && mouseY > windowHeight - 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] -= DISTANCEMOVED; 
       mapArray[i][1] -= DISTANCEMOVED;
-      distX += DISTANCEMOVED;
-      distY += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveNorthWithMap();
-      units[i].moveWestWithMap();
-    }
+    distX -= DISTANCEMOVED;
+    distY -= DISTANCEMOVED;
   }
 
   else if (mouseX > windowWidth - 50 && mouseY < 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] -= DISTANCEMOVED; 
       mapArray[i][1] += DISTANCEMOVED;
-      distX += DISTANCEMOVED;
-      distY -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveSouthWithMap();
-      units[i].moveWestWithMap();
-    }
+    distX -= DISTANCEMOVED;
+    distY += DISTANCEMOVED;
   }
 
   else if (mouseX < 50 && mouseY > windowHeight - 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] += DISTANCEMOVED; 
       mapArray[i][1] -= DISTANCEMOVED;
-      distX -= DISTANCEMOVED;
-      distY += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveNorthWithMap();
-      units[i].moveEastWithMap();
-    }
+    distX += DISTANCEMOVED;
+    distY -= DISTANCEMOVED;
   }
 
   else if (mouseX < 50 && mouseY < 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] += DISTANCEMOVED; 
       mapArray[i][1] += DISTANCEMOVED;
-      distX -= DISTANCEMOVED;
-      distY -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveSouthWithMap();
-      units[i].moveEastWithMap();
-    }
+    distX += DISTANCEMOVED;
+    distY += DISTANCEMOVED;
   }
 
   else if (mouseX > windowWidth - 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] -= DISTANCEMOVED; 
-      distX += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveWestWithMap();
-    }
+    distX -= DISTANCEMOVED;
   }
 
   else if (mouseX < 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] += DISTANCEMOVED; 
-      distX -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveEastWithMap();
-    }
+    distX += DISTANCEMOVED;
   }
 
   else if (mouseY > windowHeight - 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][1] -= DISTANCEMOVED; 
-      distY += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveNorthWithMap();
-    }
+    distY -= DISTANCEMOVED;
   }
 
   else if (mouseY < 50) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][1] += DISTANCEMOVED; 
-      distY -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveSouthWithMap();
-    }
+    distY += DISTANCEMOVED;
   }
 
   if (mapArray[0][0] > 0) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] -= DISTANCEMOVED; 
-      distX += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveWestWithMap();
-    }
+    distX -= DISTANCEMOVED;
   }
 
   if (mapArray[0][1] > 0) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][1] -= DISTANCEMOVED; 
-      distY += DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveNorthWithMap();
-    }
+    distY -= DISTANCEMOVED;
   }
 
   if (mapArray[mapArray.length-1][0] < windowWidth-TILESIZE) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][0] += DISTANCEMOVED; 
-      distX -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveEastWithMap();
-    }
+    distX += DISTANCEMOVED;
   }
 
   if (mapArray[mapArray.length-1][1] < windowHeight-TILESIZE) {
     for (let i = 0; i < mapArray.length; i++) {
       mapArray[i][1] += DISTANCEMOVED; 
-      distY -= DISTANCEMOVED;
       rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
     }
-    for (let i = 0; i < units.length; i++) {
-      units[i].moveSouthWithMap();
-    }
+    distY += DISTANCEMOVED;
   }
 }
 
@@ -233,32 +207,14 @@ class Unit {
 
   display() {
     //imageMode(CENTER);
-    if (this.team === 0) {
+    if (this.team === "blue") {
       fill(0,0,255);
     }
     else {
       fill(255,0,0);
     }
     ellipseMode(CENTER);
-    ellipse(this.x*TILESIZE-TILESIZE/2+this.xMoved, this.y*TILESIZE-TILESIZE/2 +this.yMoved, this.size, this.size);
-    image(this.img,0,0,this.size,this.size);
-  }
-
-  moveNorthWithMap() {
-    this.yMoved -= DISTANCEMOVED;
-  }
-
-  moveEastWithMap() {
-    this.xMoved += DISTANCEMOVED;
-  }
-
-  moveSouthWithMap() {
-    this.yMoved += DISTANCEMOVED;
-    
-  }
-
-  moveWestWithMap() {
-    this.xMoved -= DISTANCEMOVED;
+    ellipse(this.x*TILESIZE-TILESIZE/2+distX, this.y*TILESIZE-TILESIZE/2+distY, this.size, this.size);
   }
 
   location() {
@@ -270,7 +226,7 @@ class Unit {
     return this.team;
   }
 
-  defend() {
+  defendCity() {
     this.health += 7;
   }
 
@@ -288,8 +244,19 @@ class City {
     this.x = x_;
     this.y = y_;
     this.team = team_;
-    this.size = 30;
+    this.size = 45;
     this.pay = 100;
+  }
+
+  display() {
+    if (this.team === "blue") {
+      fill(0,0,255,50);
+    }
+    else {
+      fill(255,0,0,50);
+    }
+    rectMode(CENTER);
+    rect(this.x*TILESIZE-TILESIZE/2+distX, this.y*TILESIZE-TILESIZE/2+distY, this.size, this.size);
   }
 
   underAttack() {
