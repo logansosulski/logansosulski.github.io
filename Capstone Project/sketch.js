@@ -16,6 +16,7 @@ let mapArray = [];
 let units = [];
 let cities = [];
 let selectedUnits = [];
+let selectedCities = [];
 
 function setup() {
   createCanvas(MAPWIDTH, MAPHEIGHT);
@@ -26,6 +27,7 @@ function setup() {
 function draw() {
   moveMap();
   displayObjects();
+  selectedUI();
 }
 
 function drawMap() {
@@ -36,6 +38,14 @@ function drawMap() {
       mapArray.push(mapData);
     }
   }
+  for (let i = 0; i < mapArray.length; i++) {
+    rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
+  }
+}
+
+function redrawMap() {
+  fill(255);
+  rectMode(CORNER);
   for (let i = 0; i < mapArray.length; i++) {
     rect(mapArray[i][0], mapArray[i][1], TILESIZE, TILESIZE);
   }
@@ -166,6 +176,7 @@ function keyPressed() {
 function mousePressed() {
   //find which square the mouse is over
   if (mouseButton === LEFT) {
+    redrawMap();
     findSquare();
     highlightSelected();
   }
@@ -175,11 +186,11 @@ function mousePressed() {
         selectedUnits[i].move();
       }
     }
+    redrawMap();
+    fill(0, 255, 0, 70);
+    rectMode(CORNER);
+    rect(selectedSquare[0], selectedSquare[1], TILESIZE, TILESIZE);
   }
-  print(selectedUnits);
-  //print(selectedUnits[0].info()[3]);
-  print(units);
-  print(selectedSquare);
 }
 
 function findSquare() {
@@ -195,6 +206,7 @@ function findSquare() {
 
 function highlightSelected() {
   selectedUnits = [];
+  selectedCities = [];
   fill(0, 255, 0, 70);
   rectMode(CORNER);
   rect(selectedSquare[0], selectedSquare[1], TILESIZE, TILESIZE);
@@ -202,6 +214,29 @@ function highlightSelected() {
     if (units[i].info()[0] === (selectedSquare[0] - distX) / TILESIZE && units[i].info()[1] === (selectedSquare[1] - distY) / TILESIZE) {
       selectedUnits.push(units[i]);
     }
+  }
+  for (let i = 0; i < cities.length; i++) {
+    if (cities[i].info()[0] === (selectedSquare[0] - distX) / TILESIZE && cities[i].info()[1] === (selectedSquare[1] - distY) / TILESIZE) {
+      selectedCities.push(units[i]);
+    }
+  }
+}
+
+function selectedUI() {
+  for (let i = 0; i < selectedUnits.length; i++) {
+    fill(255);
+    rectMode(CORNER);
+    rect(windowWidth - 250, 50 * i, 300, 50);
+    fill(0);
+    text("Movement: " + selectedUnits[i].info()[3] + "   Health: " + selectedUnits[i].info()[4], windowWidth - 220, 50 * i + 25);
+  }
+
+  for (let i = 1; i < selectedCities.length + 1; i++) {
+    fill(255);
+    rectMode(CORNER);
+    rect(windowWidth - 250, windowHeight - 50 * i, 300, 50);
+    fill(0);
+    text("Produce Unit", windowWidth - 220, windowHeight - 50 * i + 25);
   }
 }
 
@@ -219,26 +254,29 @@ class Unit {
     this.img = loadImage("assets/gear.png");
   }
 
-
   move() {
     if (mouseX > selectedSquare[0] + TILESIZE && mouseY > selectedSquare[1] && mouseY < selectedSquare[1] + TILESIZE) {
       this.x += 1;
       this.movement -= 5;
+      selectedSquare[0] += TILESIZE;
     }
 
     else if (mouseX < selectedSquare[0] && mouseY > selectedSquare[1] && mouseY < selectedSquare[1] + TILESIZE) {
       this.x -= 1;
       this.movement -= 5;
+      selectedSquare[0] -= TILESIZE;
     }
 
     else if (mouseY > selectedSquare[1] + TILESIZE && mouseX > selectedSquare[0] && mouseX < selectedSquare[0] + TILESIZE) {
       this.y += 1;
       this.movement -= 5;
+      selectedSquare[1] += TILESIZE;
     }
 
     else if (mouseY < selectedSquare[1] && mouseX > selectedSquare[0] && mouseX < selectedSquare[0] + TILESIZE) {
       this.y -= 1;
       this.movement -= 5;
+      selectedSquare[1] -= TILESIZE;
     }
   }
 
@@ -291,6 +329,11 @@ class City {
     }
     rectMode(CENTER);
     rect(this.x * TILESIZE + TILESIZE / 2 + distX, this.y * TILESIZE + TILESIZE / 2 + distY, this.size, this.size);
+  }
+
+  info() {
+    let cityInfo = [this.x, this.y, this.team, this.pay];
+    return cityInfo;
   }
 
   underAttack() {
